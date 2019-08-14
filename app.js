@@ -7,7 +7,8 @@ getPreviousValue("LAST_SAVED", function(result){
   if(result["LAST_SAVED"]){
     const mode = JSON.parse(result["LAST_SAVED"]).mode;
     $(`#__AIQ__${mode}_MODE`).prop("checked", true)
-    handleAfterModeChanged(mode)
+    handleAfterModeChanged(mode);
+    toggleReplaceUrlContainer(mode);
   }
 });
 
@@ -16,6 +17,7 @@ document.getElementById("btn-clicker").addEventListener("click", function (){
     action: "__AIQ_SCRIPT_LOAD",
     apiKey: document.getElementById("__AIQ__API_KEY").value.trim(),
     mode: document.querySelector('input[name="app_mode_chooser"]:checked').value,
+    url : $("#__AIQ__OVER_RIDE_URL").val() || null
   } 
   
   if(!messageObj.apiKey || messageObj.apiKey.length < 1 ){
@@ -25,7 +27,7 @@ document.getElementById("btn-clicker").addEventListener("click", function (){
   save(messageObj, messageObj.mode)
   save({mode: messageObj.mode}, "LAST_SAVED")
 
-  const aiqScript = getAiQScript(messageObj.apiKey, endPointMapping[messageObj.mode]);
+  const aiqScript = getAiQScript(messageObj.apiKey, endPointMapping[messageObj.mode], messageObj.url);
 
   chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
     chrome.tabs.executeScript(tabs[0].id, {code: aiqScript})
@@ -33,7 +35,8 @@ document.getElementById("btn-clicker").addEventListener("click", function (){
 });
 
 $('input[type=radio][name=app_mode_chooser]').change(function() {
-  handleAfterModeChanged(this.value)
+  handleAfterModeChanged(this.value);
+  toggleReplaceUrlContainer(this.value);
 });
 
 function handleAfterModeChanged(mode){
@@ -46,6 +49,18 @@ function handleAfterModeChanged(mode){
     }
     
   })
+}
+
+function toggleReplaceUrlContainer(mode){
+  
+  if(mode == "dev"){
+    $("#replace_url_container").show();
+  }else{
+   // $("#__AIQ__OVER_RIDE_URL").val(null);
+    //$("#replace_url_container").hide();
+  }
+
+
 }
 
 function save(messageObj, key){
@@ -65,7 +80,10 @@ function getPreviousValue(key, cb){
 
 
 
-function getAiQScript(apiKey, endPoint){
+function getAiQScript(apiKey, endPoint, url = null){
+  let reqUrl = `${endPoint}/widget/load/${apiKey}`
+  reqUrl = url && url.trim().length > 0 ? `${reqUrl}?url=${url}` : reqUrl;
+
   return `
   
   (function (d, url) {
@@ -74,6 +92,6 @@ function getAiQScript(apiKey, endPoint){
       s_l.src = url;
     d.getElementsByTagName("head")[0].appendChild(s_l)
 
-  })(document, "${endPoint}/widget/load/${apiKey}");
+  })(document, "${reqUrl}");
   `
 }
