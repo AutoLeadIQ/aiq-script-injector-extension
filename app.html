@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>AIQ Script injector</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    </head>
+    <body style="min-width: 400px; min-height: 350px">
+        <div class="container text-center">
+          <div class="my-5">
+          <div class="col-12 text-center mt-4 mb-2"><img src="https://s3.us-east-2.amazonaws.com/aiq-app-assets/cdn/logos/AIQ-Logo-Color.svg" alt="AutoLeadIQ" style="max-width:200px"></div>
+          <div class="lead col-12 text-center mb-2">Widget Loader</div>
+          </div>
+            <div class="col-12 mb-3">
+                <div class="form-group">
+                    <label>Api Key eg: (5AjGCwJ6PbEqDdZX)</label>
+                    <input type="text" class="form-control" id="__AIQ__API_KEY" placeholder="host/widget/load/{{ THIS IS THE API KEY }}"/>
+                </div>
+            </div>
+            <div class="col-12 my-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input modes_radio" type="radio" name="app_mode_chooser" id="__AIQ__dev_MODE" value="dev">
+                    <label class="form-check-label" for="__AIQ__dev_MODE">Development</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input modes_radio" type="radio" name="app_mode_chooser" id="__AIQ__live_MODE" value="live" checked="checked">
+                    <label class="form-check-label" for="__AIQ__live_MODE">Live</label>
+                </div>
+            </div>
+            <div class="col-12 my-3">
+              <div class="btn btn-primary btn-block" id="btn-clicker">
+                  Run AutoLeadIQ
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/jquery-3.4.1.slim.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
