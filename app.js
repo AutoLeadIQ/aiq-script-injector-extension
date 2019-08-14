@@ -3,6 +3,11 @@ const endPointMapping = {
   "dev": "http://localhost:5000"
 }
 
+chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
+  $("#__AIQ__OVER_RIDE_URL").val(tabs[0].url)
+})
+
+
 getPreviousValue("LAST_SAVED", function(result){
   if(result["LAST_SAVED"]){
     const mode = JSON.parse(result["LAST_SAVED"]).mode;
